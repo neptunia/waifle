@@ -10,6 +10,7 @@ const guessesList = document.querySelector("#guessesList");
 
 const submit = document.querySelector("#submit");
 var originalImage;
+var ogImg;
 
 var word = "";
 var url = "";
@@ -200,6 +201,7 @@ function pixelateImage(originalImage, pixelationFactor) {
   const originalWidth = originalImage.width;
   const originalHeight = originalImage.height;
 
+
   const canvasWidth = originalWidth;
   const canvasHeight = originalHeight;
 
@@ -234,6 +236,8 @@ function pixelateImage(originalImage, pixelationFactor) {
   }
   pixelatedImage.src = canvas.toDataURL();
   pixelatedImage.style.visibility='visible';
+  pixelatedImage.style.opacity='1';
+  
 }
 
 const autoCompleteJS = new autoComplete({
@@ -333,8 +337,16 @@ window.addEventListener('load', function() {
     url = item["image"];
     //console.log(url);
     pixelatedImage.style.visibility='hidden';
-    pixelatedImage.onload = function() {originalImage = pixelatedImage.cloneNode(true);pixelateImage(originalImage, Math.ceil(230 / 2 ** (difficultyLevel + 1)));difficultyLevel += 1;pixelatedImage.onload=null;}
-    pixelatedImage.src = url;
+    pixelatedImage.style.opacity='0';
+
+    ogImg = new Image();
+    ogImg.crossOrigin="anonymous";
+    ogImg.onload = function() {originalImage = ogImg.cloneNode(true);pixelateImage(originalImage, Math.ceil(230 / 2 ** (difficultyLevel + 1)));difficultyLevel += 1;ogImg.onload=null;}
+    ogImg.src = url;
+
+    
+    //pixelatedImage.onload = function() {originalImage = pixelatedImage.cloneNode(true);pixelateImage(originalImage, Math.ceil(230 / 2 ** (difficultyLevel + 1)));difficultyLevel += 1;pixelatedImage.onload=null;}
+    //pixelatedImage.src = url;
     document.querySelector("#guess"+(guessesMade+1)).style.borderColor = "gray";
 
 
