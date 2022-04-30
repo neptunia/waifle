@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.min.css">
+      <link rel="stylesheet" href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,0" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel="stylesheet" href="./src/bootstrap.min.css" />
+      <style>
+      body {
+        font-family: "Segoe UI";
+      }
+      #footer {
+          position: fixed;
+          bottom: 0;
+          width: 100%;
+          line-height: 2;
+          text-align: center;
+          font-family: sans-serif;
+      }
+
+      .autoComplete_wrapper > ul {
+        margin: -355px 0 0 0;
+        max-height: 300px;
+        min-height: 300px;
+      }
+
+      .guessbox {
+        width: 460px;
+        height: 2.5em;
+        line-height: 2.5em;
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+        border: 1px solid;
+        border-color: lightgray;
+        text-align: left;
+        padding-left: 7px;
+      }
+
+      .guessboxleft {
+        float: left;
+        display: table;
+        max-height: 2.5em;
+        min-height: 2.5em;
+      }
+      .guessboxright {
+        float: left;
+        max-height: 2.5em;
+        min-height: 2.5em;
+        padding-left: 10px;
+      }
+
+      .material-symbols-outlined {
+        display: table-cell;
+        vertical-align: middle;
+      }
+
+      .modal-header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .modal-header .close {
+          padding: 1rem;
+          margin: -1rem -1rem -1rem auto;
+      }
+
+      .headerbar {
+        display: flex;
+        height:  6em;
+      }
+
+      .headerleft, .headerright {
+        flex: 1;
+        padding-left: 6em;
+        align-items: center;
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+
+      .headermiddle {
+        margin-top: auto;
+        margin-bottom: auto;        
+      }
+
+      .headerright button {
+        background:none;
+        border:none;
+        padding: 2px;
+        padding-bottom: 6px;
+
+      }
+
+      .numberinos{
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+      }
+
+</style>
+  </head>
+  <body>
+    <center>
+      <div class="headerbar">
+        <div class="headerleft"></div>
+        <div class="headermid"><h1>Waifle</h1></div>
+        <div class="headerright" align="left"><div class="headericons">
+
+          <button class="mdc-icon-button material-symbols-outlined" data-toggle="modal" data-target="#instructions">
+            <div class="mdc-icon-button__ripple"></div>
+            info
+          </button>
+
+          <button class="mdc-icon-button material-symbols-outlined" data-toggle="modal" data-target="#exampleModal">
+            <div class="mdc-icon-button__ripple"></div>
+            leaderboard
+          </button>
+
+        </div>
+        </div>
+      </div>
+    
+    <div>
+      <img
+        style="margin-top: 5px; visibility:hidden;"
+        id="pixelatedImage"
+        src="./placeholder.png"
+        crossorigin="anonymous"
+      />
+    </div>
+      <div style="margin-top: 20px;">
+      <span>Your guesses: </span>
+      <div id="guessesdivs">
+        <div id="guess1" class="guessbox"><div id="symbol1" class="guessboxleft"></div><div id="text1" class="guessboxright"></div></div>
+        <div id="guess2" class="guessbox"><div id="symbol2" class="guessboxleft"></div><div id="text2" class="guessboxright"></div></div>
+        <div id="guess3" class="guessbox"><div id="symbol3" class="guessboxleft"></div><div id="text3" class="guessboxright"></div></div>
+        <div id="guess4" class="guessbox"><div id="symbol4" class="guessboxleft"></div><div id="text4" class="guessboxright"></div></div>
+        <div id="guess5" class="guessbox"><div id="symbol5" class="guessboxleft"></div><div id="text5" class="guessboxright"></div></div>
+        <div id="guess6" class="guessbox"><div id="symbol6" class="guessboxleft"></div><div id="text6" class="guessboxright"></div></div>
+      </div>
+      <p id="guessesList"></p>
+      </div>
+
+
+    <div id="footer" style="margin: 25px 0;">
+      <div>
+        <div class="autoComplete_wrapper">
+            <input id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off" autocapitalize="off">
+        </div>
+
+        <br>
+
+        <button id="submit" class="btn btn-secondary" style="margin-top:5px;" >Submit</button>
+      </div>
+    </div>
+  
+    </center>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="font-size:1.5em;">Statistics</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="modalWinText"></div>
+            <br>
+            <div>
+                <center>
+                <div class="numberinos">
+                  <div style="float:left"><div id="gamesPlayed" style="font-size:2em">0</div><div style="font-size:0.7em">Games Played</div></div>
+                  <div style="float:left"><div id="winPct" style="font-size:2em">N/A</div><div style="font-size:0.7em">Win Percentage</div></div>
+                </div>
+                </center>
+                <hr>
+                <canvas id="myChart" width="400" height="150"></canvas>
+
+              <div id="modalStatistics"></div>
+
+              
+
+
+            </div>
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="modalShare" disabled>Share</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="instructions" tabindex="-1" role="dialog" aria-labelledby="instructionsLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="instructionsLabel" style="font-size:1.5em;">How to play</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="instructionsText">
+            Guess the popular anime waifu in 6 tries!<br><br>
+
+            Each guess must be spelled correctly; make sure to select the name from the suggestions dropdown. Press the submit button to enter your guess.<br><br>
+
+            After each guess, the resolution of the image will increase.<br><br>
+
+            There will be a new Waifle every day.
+            <hr>
+            <div style="font-size:0.7em">Yet another wordle clone. Prepared with jquery, autocomplete.js, bootstrap, and chart.js.</div> 
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
+    <script src="./src/index.js"></script>
+    <script src="./src/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+
+  </body>
+</html>
