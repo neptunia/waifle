@@ -45,7 +45,7 @@ function updateStatistics() {
         occurrences[num-1] += 1;
       }
     }
-    console.log(occurrences);
+    //console.log(occurrences);
 
     // bar graph stuff
 
@@ -250,7 +250,7 @@ const autoCompleteJS = new autoComplete({
                 let namesList = items.map(function (currentElement) {
                   return currentElement["name"];
                 }).sort();
-                console.log(namesList);
+                //console.log(namesList);
                 // Post Loading placeholder text
                 document.getElementById("autoComplete").setAttribute("placeholder", autoCompleteJS.placeHolder);
                 // Returns Fetched data
@@ -298,12 +298,12 @@ const autoCompleteJS = new autoComplete({
                 autoCompleteJS.input.blur();
                 // Prepare User's Selected Value
                 const selection = feedback.selection.value;
-                console.log(selection);
-                console.log(feedback);
+                //console.log(selection);
+                //console.log(feedback);
                 // Replace Input value with the selected value
                 autoCompleteJS.input.value = selection;
                 // Console log autoComplete data feedback
-                console.log(feedback);
+                //console.log(feedback);
               },
             },
           },
@@ -328,10 +328,10 @@ window.addEventListener('load', function() {
 
     var items = data.response;     
     var item = items[Math.floor(Math.random()*items.length)];
-    console.log(item);
+    //console.log(item);
     word = item["name"];
     url = item["image"];
-    console.log(url);
+    //console.log(url);
     pixelatedImage.onload = function() {originalImage = pixelatedImage.cloneNode(true);pixelateImage(originalImage, Math.ceil(230 / 2 ** (difficultyLevel + 1)));difficultyLevel += 1;pixelatedImage.onload=null;}
     pixelatedImage.src = url;
     document.querySelector("#guess"+(guessesMade+1)).style.borderColor = "gray";
