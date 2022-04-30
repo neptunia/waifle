@@ -340,9 +340,9 @@ window.addEventListener('load', function() {
     const shareButton = document.querySelector("#modalShare");
     shareButton.addEventListener('click', function() {
       if (win === true) {
-        navigator.clipboard.writeText("I did today's Waifle in "+guessesMade+" tries!\n\uD83D\uDD0e"+guessStatuses.join("")+"\nhttps://waifledeeznuts.com");
+        navigator.clipboard.writeText("I did today's Waifle in "+guessesMade+" tries!\n\uD83D\uDD0e"+guessStatuses.join("")+"\nhttps://neptunia.github.io/waifle/");
       } else {
-        navigator.clipboard.writeText("I am a stinky poopoo who was unable to solve today's Waifle! https://waifledeeznuts.com");
+        navigator.clipboard.writeText("I am a stinky poopoo who was unable to solve today's Waifle! https://neptunia.github.io/waifle/");
       }
       
     })
