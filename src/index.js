@@ -320,7 +320,7 @@ window.addEventListener('load', function() {
 
   updateStatistics();
 
-  fetch("./src/waifus.json")
+  fetch("./src/waifus_3.json")
   .then(response => {
      return response.json();
   })
@@ -332,6 +332,7 @@ window.addEventListener('load', function() {
     word = item["name"];
     url = item["image"];
     //console.log(url);
+    pixelatedImage.style.visibility='hidden';
     pixelatedImage.onload = function() {originalImage = pixelatedImage.cloneNode(true);pixelateImage(originalImage, Math.ceil(230 / 2 ** (difficultyLevel + 1)));difficultyLevel += 1;pixelatedImage.onload=null;}
     pixelatedImage.src = url;
     document.querySelector("#guess"+(guessesMade+1)).style.borderColor = "gray";
@@ -339,11 +340,23 @@ window.addEventListener('load', function() {
 
     const shareButton = document.querySelector("#modalShare");
     shareButton.addEventListener('click', function() {
+
       if (win === true) {
         navigator.clipboard.writeText("I did today's Waifle in "+guessesMade+" tries!\n\uD83D\uDD0e"+guessStatuses.join("")+"\nhttps://neptunia.github.io/waifle/");
       } else {
         navigator.clipboard.writeText("I am a stinky poopoo who was unable to solve today's Waifle! https://neptunia.github.io/waifle/");
       }
+
+      var span = document.getElementById('fader');
+    
+      span.style.transition = 'none';
+      span.style.opacity = '1';
+      
+      /* This line seems to 'reset' the element so that the transition can be run again. */
+      void span.offsetWidth;
+      
+      span.style.transition = 'opacity 1s';
+      span.style.opacity = '0';
       
     })
     
