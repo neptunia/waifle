@@ -248,12 +248,12 @@ const autoCompleteJS = new autoComplete({
                 // Loading placeholder text
                 document.getElementById("autoComplete").setAttribute("placeholder", "Loading...");
                 // Fetch External Data Source
-                const source = await fetch("./src/waifus_3.json");
+                const source = await fetch("./src/waifus_4.json");
                 const data = await source.json();
-                var items = data.response;
+                var items = data["response"];
                 let namesList = items.map(function (currentElement) {
-                  return currentElement["name"];
-                }).sort();
+                  var tmp = {}; tmp["data"] = [currentElement["name"],currentElement["show"]]; return tmp;
+                }).sort((a,b) => (a["data"][0] > b["data"][1]) ? 1 : -1);
                 //console.log(namesList);
                 // Post Loading placeholder text
                 document.getElementById("autoComplete").setAttribute("placeholder", autoCompleteJS.placeHolder);
@@ -264,7 +264,27 @@ const autoCompleteJS = new autoComplete({
                 return error;
               }
             },
+            
+            keys: ["data"],
             cache: true,
+        },
+        searchEngine: (query, record) => {
+          query = query.toLowerCase();
+          const name = record[0];
+          const show = record[1];
+
+          if (name.toLowerCase().includes(query)) {
+            const idx = name.toLowerCase().indexOf(query);
+            let aa = name.substring(0, idx) + "<mark>" + name.substring(idx, idx+query.length) + "</mark>" + name.substring(idx+query.length);
+            aa =  aa.replace(" </mark>","&nbsp;</mark>").replace("</mark> ","</mark>&nbsp;")
+            return aa.replace(" <mark>","&nbsp;<mark>").replace("<mark> ","<mark>&nbsp;")
+            
+          }
+          else if (show.toLowerCase().includes(query)) {
+            return name;
+          }
+
+          return false;
         },
         resultsList: {
             element: (list, data) => {
@@ -277,7 +297,7 @@ const autoCompleteJS = new autoComplete({
               list.prepend(info);
             },
             noResults: true,
-            maxResults: 5,
+            maxResults: 10,
             tabSelect: true
           },
           resultItem: {
@@ -285,9 +305,14 @@ const autoCompleteJS = new autoComplete({
               // Modify Results Item Style
               item.style = "display: flex; justify-content: space-between;";
               // Modify Results Item Content
+              //console.log(data);
+              //console.log(data.match);
               item.innerHTML = `
-              <span style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+              <span style="display: flex; padding-right:40px;">
                 ${data.match}
+              </span>
+              <span style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;align-items: center; font-size: 10px; font-weight: 100; text-transform: uppercase; color: rgba(0,0,0,.3);">
+                ${data.value.data[1]}
               </span>`;
             },
             highlight: true
@@ -305,7 +330,8 @@ const autoCompleteJS = new autoComplete({
                 //console.log(selection);
                 //console.log(feedback);
                 // Replace Input value with the selected value
-                autoCompleteJS.input.value = selection;
+
+                autoCompleteJS.input.value = selection.data[0];
                 // Console log autoComplete data feedback
                 //console.log(feedback);
               },
@@ -324,7 +350,7 @@ window.addEventListener('load', function() {
 
   updateStatistics();
 
-  fetch("./src/waifus_3.json")
+  fetch("./src/waifus_4.json")
   .then(response => {
      return response.json();
   })
