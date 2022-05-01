@@ -13,6 +13,7 @@ var originalImage;
 var ogImg;
 
 var word = "";
+var series = "";
 var url = "";
 var myChart;
 
@@ -179,7 +180,7 @@ function handleGuess(guess) {
 
       document.querySelector("#modalShare").disabled = false;
       win = false;
-      document.querySelector("#modalWinText").innerHTML="Sorry, you didn't get today's Waifle. The answer was "+word+". Try again tomorrow!"
+      document.querySelector("#modalWinText").innerHTML="Sorry, you didn't get today's Waifle. The answer was "+word+" ("+series+"). Try again tomorrow!"
       $('#exampleModal').modal('show');
 
     } else {
@@ -360,6 +361,7 @@ window.addEventListener('load', function() {
     var item = items[Math.floor(Math.random()*items.length)];
     //console.log(item);
     word = item["name"];
+    series = item["show"];
     url = item["image"];
     //console.log(url);
     pixelatedImage.style.visibility='hidden';
