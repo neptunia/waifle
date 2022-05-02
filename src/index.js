@@ -15,6 +15,8 @@ var ogImg;
 var word = "";
 var series = "";
 var url = "";
+
+
 var myChart;
 
 var guessStatuses = ["\u2b1c","\u2b1c","\u2b1c","\u2b1c","\u2b1c","\u2b1c"];
@@ -340,6 +342,29 @@ const autoCompleteJS = new autoComplete({
           },
     });
 
+function toggleTheme() {
+  if (localStorage.getItem("brightMode") === "light") {
+    localStorage.setItem('brightMode', "dark");
+  } else {
+    localStorage.setItem('brightMode', "light");
+  }
+  setTheme();
+}
+
+function setTheme() {
+  if (localStorage.getItem("brightMode") === "light") {
+    document.body.style.backgroundColor = "white";
+    document.querySelector('#content').style.color = "black";
+    document.querySelector('#headerbar').style.color = "black";
+    
+  } else {
+    document.body.style.backgroundColor = "#121212";
+    document.querySelector('#content').style.color = "#eeeeee";
+    document.querySelector('#headerbar').style.color = "#eeeeee";
+    
+  }
+}
+
 window.addEventListener('load', function() {
 
 
@@ -347,6 +372,13 @@ window.addEventListener('load', function() {
     localStorage.setItem('firstTime', 'false');
     localStorage.setItem('data', JSON.stringify({"tries":0, "wins":0, "distribution":[]}));
     $('#instructions').modal('show')
+  }
+
+  if (localStorage.getItem("brightMode") === null) {
+    localStorage.setItem("brightMode", "light");
+    setTheme();
+  } else {
+    setTheme();
   }
 
   updateStatistics();
@@ -405,6 +437,7 @@ window.addEventListener('load', function() {
   );
 
 
-})
+});
 
 
+document.querySelector("#themeToggler").addEventListener('click', toggleTheme);

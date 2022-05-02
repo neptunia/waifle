@@ -98,14 +98,24 @@
         justify-content: space-evenly;
       }
 
+      .wrapper {
+        color: black;
+      }
+
 </style>
   </head>
   <body>
     <center>
-      <div class="headerbar">
+      <div class="wrapper" id="wrapper">
+      <div class="headerbar" id="headerbar">
         <div class="headerleft"></div>
         <div class="headermid"><h1>Waifle</h1></div>
         <div class="headerright" align="left"><div class="headericons">
+
+          <button class="mdc-icon-button material-symbols-outlined" id="themeToggler">
+            <div class="mdc-icon-button__ripple"></div>
+            light_mode
+          </button>
 
           <button class="mdc-icon-button material-symbols-outlined" data-toggle="modal" data-target="#instructions">
             <div class="mdc-icon-button__ripple"></div>
@@ -121,6 +131,7 @@
         </div>
       </div>
     
+    <div id="content">
     <div>
       <img
         style="margin-top: 5px; visibility:hidden; opacity:0;"
@@ -141,6 +152,7 @@
       </div>
       <p id="guessesList"></p>
       </div>
+    </div>
 
 
     <div id="footer" style="margin: 25px 0;">
@@ -154,6 +166,7 @@
         <button id="submit" class="btn btn-secondary" style="margin-top:5px;" >Submit</button>
       </div>
     </div>
+  </div>
   
     </center>
     <!-- Modal -->
