@@ -56,6 +56,11 @@ function updateGuessBoxes() {
       var currentGuessBox = document.querySelector("#guess"+(i+1));
       currentGuessBox.appendChild(text);
       currentGuessBox.style.borderColor = "lightgray";
+
+      document.querySelector("#modalShare").disabled = false;
+      document.querySelector("#modalWinText").innerHTML="Wow you did it! It took you "+guessesMade+" tries."
+      submit.disabled = true;
+    win = true;
     } else if (document.querySelector("#text"+(i+1)).innerHTML.length == 0) {
       let sp = document.createElement('span');
       sp.className = 'material-symbols-outlined';
