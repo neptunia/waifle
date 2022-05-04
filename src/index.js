@@ -20,11 +20,17 @@ var url = "";
 var myChart;
 
 var guessStatuses = ["\u2b1c","\u2b1c","\u2b1c","\u2b1c","\u2b1c","\u2b1c"];
+var guessTexts = [];
 
 var difficultyLevel = 0;
 var guessesMade = 0;
 
 var win=null;
+
+const gameStartDate = new Date("05/03/2022");
+let todayDate = new Date();
+todayDate.setHours(0,0,0,0);
+const daysSinceGameStart = (todayDate.getTime() - gameStartDate.getTime())/86400000;
 
 submit.addEventListener("click", async (e) => {
   var guess = document.querySelector("#autoComplete").value;
@@ -32,6 +38,84 @@ submit.addEventListener("click", async (e) => {
   handleGuess(guess);
 
 });
+
+function updateGuessBoxes() {
+  // DO THIS LATER
+  for (var i=0; i< guessesMade; i++) {
+    if (guessTexts[i] == word && document.querySelector("#text"+(i+1)).innerHTML.length == 0) {
+
+      var text = document.createTextNode(guessTexts[i]);
+      let sp = document.createElement('span');
+      sp.className = 'material-symbols-outlined';
+      sp.innerHTML = 'done';
+      sp.style.removeProperty("lineHeight");
+      sp.style.color = "green";
+      document.querySelector("#symbol"+(i+1)).appendChild(sp);
+      document.querySelector("#text"+(i+1)).appendChild(text);
+      
+      var currentGuessBox = document.querySelector("#guess"+(i+1));
+      currentGuessBox.appendChild(text);
+      currentGuessBox.style.borderColor = "lightgray";
+    } else if (document.querySelector("#text"+(i+1)).innerHTML.length == 0) {
+      let sp = document.createElement('span');
+      sp.className = 'material-symbols-outlined';
+
+      if (guessStatuses[i] == "\u2B1B") {
+        sp.innerHTML = 'check_box_outline_blank';
+        sp.style.color = "gray";
+      } else {
+        sp.innerHTML = 'close';
+        sp.style.color = "red";
+      }
+
+      sp.style.removeProperty("lineHeight");
+      //sp.style.color = "red";
+
+      var text = document.createTextNode(guessTexts[i]);
+      var currentGuessBox = document.querySelector("#guess"+(i+1));
+      document.querySelector("#symbol"+(i+1)).appendChild(sp);
+      document.querySelector("#text"+(i+1)).appendChild(text);
+      currentGuessBox.style.borderColor = "lightgray";
+      if (guessesMade < 6) {
+        document.querySelector("#guess"+(guessesMade+1)).style.borderColor = "gray";
+      }
+      
+    }
+
+    
+
+
+
+  }
+}
+
+function saveGuesses() {
+  j = {"timestamp":todayDate.getTime(), "difficultyLevel":difficultyLevel, "guessesMade":guessesMade, "guessStatuses":guessStatuses, "guessTexts":guessTexts};
+  localStorage.setItem('todaysGuesses', JSON.stringify(j));
+}
+
+function loadGuessesIfAvailable() {
+  if (localStorage.getItem("todaysGuesses") === null) {
+    // they don't exist yet
+    j = {"timestamp":todayDate.getTime(), "difficultyLevel":difficultyLevel, "guessesMade":guessesMade, "guessStatuses":guessStatuses, "guessTexts":guessTexts};
+    localStorage.setItem('todaysGuesses', JSON.stringify(j));
+  } else {
+    let stats = JSON.parse(localStorage.getItem("todaysGuesses"));
+    if (stats["timestamp"] !== todayDate.getTime()) {
+      // it was from a different day
+      j = {"timestamp":todayDate.getTime(), "difficultyLevel":difficultyLevel, "guessesMade":guessesMade, "guessStatuses":guessStatuses, "guessTexts":guessTexts};
+      localStorage.setItem('todaysGuesses', JSON.stringify(j));
+    } else {
+      // it was from today so we need to populate the fields
+      difficultyLevel = stats["difficultyLevel"];
+      guessesMade = stats["guessesMade"];
+      guessStatuses = stats["guessStatuses"];
+      guessTexts = stats["guessTexts"];
+      updateGuessBoxes();
+    }
+  }
+
+}
 
 function updateStatistics() {
   const submit = document.querySelector("#modalStatistics");
@@ -106,6 +190,7 @@ function updateStatistics() {
 
 function handleGuess(guess) {
   guessesMade += 1;
+  guessTexts[guessesMade-1] = guess;
 
   document.getElementById("autoComplete").value = "";
 
@@ -113,18 +198,8 @@ function handleGuess(guess) {
 
     guessStatuses[guessesMade-1] = "\uD83D\uDFE9";
 
-    var text = document.createTextNode(guess);
-    let sp = document.createElement('span');
-    sp.className = 'material-symbols-outlined';
-    sp.innerHTML = 'done';
-    sp.style.removeProperty("lineHeight");
-    sp.style.color = "green";
-    document.querySelector("#symbol"+guessesMade).appendChild(sp);
-    document.querySelector("#text"+guessesMade).appendChild(text);
-    
-    var currentGuessBox = document.querySelector("#guess"+guessesMade);
-    currentGuessBox.appendChild(text);
-    currentGuessBox.style.borderColor = "lightgray";
+    saveGuesses();
+    updateGuessBoxes();
 
     pixelateImage(originalImage, 1);
 
@@ -145,32 +220,17 @@ function handleGuess(guess) {
 
   } else {
 
-
-    let sp = document.createElement('span');
-    sp.className = 'material-symbols-outlined';
-
     if (guess == "") {
       guess = "Skipped";
-      sp.innerHTML = 'check_box_outline_blank';
-      sp.style.color = "gray";
+      guessTexts[guessesMade-1] = "Skipped";
       guessStatuses[guessesMade-1] = "\u2B1B";
     } else {
-      sp.innerHTML = 'close';
-      sp.style.color = "red";
       guessStatuses[guessesMade-1] = "\uD83D\uDFE5";
     }
 
-    sp.style.removeProperty("lineHeight");
-    //sp.style.color = "red";
-
-    var text = document.createTextNode(guess);
-    var currentGuessBox = document.querySelector("#guess"+guessesMade);
-
-    document.querySelector("#symbol"+guessesMade).appendChild(sp);
-
-    document.querySelector("#text"+guessesMade).appendChild(text);
-
-    currentGuessBox.style.borderColor = "lightgray";
+    saveGuesses();
+    updateGuessBoxes();
+    
     if (guessesMade >= 6) {
       submit.disabled = true;
       pixelateImage(originalImage, 1);
@@ -225,6 +285,7 @@ function pixelateImage(originalImage, pixelationFactor) {
       for (let x = 0; x < originalWidth; x += pixelationFactor) {
         // extracting the position of the sample pixel
         const pixelIndexPosition = (x + y * originalWidth) * 4;
+        //const pixelIndexPosition = ((x+Math.floor(pixelationFactor/2)) + y * (originalWidth + originalWidth * Math.floor(pixelationFactor/2))) * 4;
 
         // drawing a square replacing the current pixels
         context.fillStyle = `rgba(
@@ -389,8 +450,8 @@ window.addEventListener('load', function() {
   })
   .then(data => {
 
-    var items = data.response;     
-    var item = items[Math.floor(Math.random()*items.length)];
+    var items = data.response;
+    var item = items[(817 * daysSinceGameStart)%items.length];
     //console.log(item);
     word = item["name"];
     series = item["show"];
@@ -408,6 +469,8 @@ window.addEventListener('load', function() {
     //pixelatedImage.onload = function() {originalImage = pixelatedImage.cloneNode(true);pixelateImage(originalImage, Math.ceil(230 / 2 ** (difficultyLevel + 1)));difficultyLevel += 1;pixelatedImage.onload=null;}
     //pixelatedImage.src = url;
     document.querySelector("#guess"+(guessesMade+1)).style.borderColor = "gray";
+
+    loadGuessesIfAvailable()
 
 
     const shareButton = document.querySelector("#modalShare");
