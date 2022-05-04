@@ -61,6 +61,7 @@ function updateGuessBoxes() {
       document.querySelector("#modalWinText").innerHTML="Wow you did it! It took you "+guessesMade+" tries."
       submit.disabled = true;
       win = true;
+      difficultyLevel = 1000;
     } else if (document.querySelector("#text"+(i+1)).innerHTML.length == 0) {
       let sp = document.createElement('span');
       sp.className = 'material-symbols-outlined';
