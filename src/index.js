@@ -60,7 +60,7 @@ function updateGuessBoxes() {
       document.querySelector("#modalShare").disabled = false;
       document.querySelector("#modalWinText").innerHTML="Wow you did it! It took you "+guessesMade+" tries."
       submit.disabled = true;
-    win = true;
+      win = true;
     } else if (document.querySelector("#text"+(i+1)).innerHTML.length == 0) {
       let sp = document.createElement('span');
       sp.className = 'material-symbols-outlined';
@@ -81,15 +81,18 @@ function updateGuessBoxes() {
       document.querySelector("#symbol"+(i+1)).appendChild(sp);
       document.querySelector("#text"+(i+1)).appendChild(text);
       currentGuessBox.style.borderColor = "lightgray";
-      if (guessesMade < 6) {
-        document.querySelector("#guess"+(guessesMade+1)).style.borderColor = "gray";
-      }
+      
       
     }
-
-    
-
-
+  }
+  if (guessesMade < 6) {
+    document.querySelector("#guess"+(guessesMade+1)).style.borderColor = "gray";
+  } else {
+    submit.disabled = true;
+    difficultyLevel = 1000; // hacky fix to depixelate the image
+    document.querySelector("#modalShare").disabled = false;
+    win = false;
+    document.querySelector("#modalWinText").innerHTML="Sorry, you didn't get today's Waifle. The answer was "+word+" ("+series+"). Try again tomorrow!"
 
   }
 }
@@ -475,7 +478,7 @@ window.addEventListener('load', function() {
     //pixelatedImage.src = url;
     document.querySelector("#guess"+(guessesMade+1)).style.borderColor = "gray";
 
-    loadGuessesIfAvailable()
+    loadGuessesIfAvailable();
 
 
     const shareButton = document.querySelector("#modalShare");
