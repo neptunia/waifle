@@ -294,7 +294,7 @@ function pixelateImage(originalImage, pixelationFactor) {
       for (let x = 0; x < originalWidth; x += pixelationFactor) {
         // extracting the position of the sample pixel
         const pixelIndexPosition = (x + y * originalWidth) * 4;
-        //const pixelIndexPosition = ((x+Math.floor(pixelationFactor/2)) + y * (originalWidth + originalWidth * Math.floor(pixelationFactor/2))) * 4;
+        //const pixelIndexPosition = ((x+Math.floor(pixelationFactor/2)) + y * (originalWidth)) * 4;
 
         // drawing a square replacing the current pixels
         context.fillStyle = `rgba(
@@ -486,7 +486,7 @@ window.addEventListener('load', function() {
     shareButton.addEventListener('click', function() {
 
       if (win === true) {
-        navigator.clipboard.writeText("I did today's Waifle in "+guessesMade+" tries!\n\uD83D\uDD0e"+guessStatuses.join("")+"\nhttps://neptunia.github.io/waifle/");
+        navigator.clipboard.writeText("I did today's Waifle (#"+daysSinceGameStart+") in "+guessesMade+" tries!\n\uD83D\uDD0e"+guessStatuses.join("")+"\nhttps://neptunia.github.io/waifle/");
       } else {
         navigator.clipboard.writeText("I am a stinky poopoo who was unable to solve today's Waifle! https://neptunia.github.io/waifle/");
       }
