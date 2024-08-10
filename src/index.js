@@ -486,9 +486,9 @@ window.addEventListener('load', function() {
     shareButton.addEventListener('click', function() {
 
       if (win === true) {
-        navigator.clipboard.writeText("I did today's Waifle (#"+daysSinceGameStart+") in "+guessesMade+" tries!\n\uD83D\uDD0e"+guessStatuses.join("")+"\nhttps://neptunia.github.io/waifle/");
+        navigator.clipboard.writeText("I did today's Waifle (#"+daysSinceGameStart+") in "+guessesMade+" tries!\n\uD83D\uDD0e"+guessStatuses.join("")+"\nhttps://waifle.nowaru.moe");
       } else {
-        navigator.clipboard.writeText("I am a stinky poopoo who was unable to solve today's Waifle (#"+daysSinceGameStart+")! https://neptunia.github.io/waifle/");
+        navigator.clipboard.writeText("I am a stinky poopoo who was unable to solve today's Waifle (#"+daysSinceGameStart+")! https://waifle.nowaru.moe");
       }
 
       var span = document.getElementById('fader');
