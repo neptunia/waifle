@@ -30,7 +30,7 @@ var win=null;
 const gameStartDate = new Date("05/03/2022");
 let todayDate = new Date();
 todayDate.setHours(0,0,0,0);
-const daysSinceGameStart = (todayDate.getTime() - gameStartDate.getTime())/86400000;
+const daysSinceGameStart = Math.floor((todayDate.getTime() - gameStartDate.getTime())/86400000);
 
 submit.addEventListener("click", async (e) => {
   var guess = document.querySelector("#autoComplete").value;
